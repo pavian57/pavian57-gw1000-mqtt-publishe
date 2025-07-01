@@ -1,0 +1,22 @@
+[Unit]
+Description=My PHP Daemon Service
+Wants=network-online.target multi-user.target
+After=network-online.target multi-user.target
+
+[Service]
+#User=root
+#Type=simple
+#TimeoutSec=0
+PIDFile=/var/run/gw1000-mqtt-publisher.pid
+ExecStart=/usr/bin/php -f /home/pi/script/gw1000-mqtt-publisher.php > /dev/null 2>/dev/null
+#ExecStop=/bin/kill -HUP $MAINPID #It's the default you can change whats happens on stop command
+#ExecReload=/bin/kill -HUP $MAINPID
+KillMode=process
+
+Restart=on-failure
+RestartSec=42s
+
+StandardOutput=null #If you don't want to make toms of logs you can set it null if you sent a file or some other options it will send all PHP output to this one.
+StandardError=/var/log/gw1000-mqtt-publisher.log
+[Install]
+WantedBy=default.target 
